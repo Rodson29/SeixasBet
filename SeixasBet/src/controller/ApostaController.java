@@ -7,11 +7,20 @@ import model.VO.ApostaVO;
 
 public class ApostaController {
 
-	public String validarCamposSalvar(String valorDigitado) {
+	public String validarCamposSalvar(String valorDigitado1, String valorDigitado2, String valorDigitado3, String valorDigitado4) {
 
 		String mensagem = "";
 
-		if (valorDigitado.isEmpty() || valorDigitado.length() < 0.0) {
+		if (valorDigitado1.isEmpty() || valorDigitado1.length() < 0.0) {
+			mensagem += "Digite um valor maior que zero";
+		}
+		if (valorDigitado2.isEmpty() || valorDigitado2.length() < 0.0) {
+			mensagem += "Digite um valor maior que zero";
+		}
+		if (valorDigitado3.isEmpty() || valorDigitado3.length() < 0.0) {
+			mensagem += "Digite um valor maior que zero";
+		}
+		if (valorDigitado4.isEmpty() || valorDigitado4.length() < 0.0) {
 			mensagem += "Digite um valor maior que zero";
 		}
 
@@ -27,7 +36,7 @@ public class ApostaController {
 
 	public void cadastrarApostaController(ApostaVO apostaVO) {
 		ApostaBO apostaBO = new ApostaBO();
-		apostaBO.cadastrarApostaBO(apostaVO);
+				 apostaBO.cadastrarApostaBO(apostaVO);
 	}
 
 	public boolean excluirApostaController(ApostaVO apostaVO) {
@@ -35,10 +44,6 @@ public class ApostaController {
 		return apostaBO.excluirApostaBO(apostaVO);
 	}
 
-//	public void atualizarApostaController(ApostaVO apostaVO) {
-		//ApostaBO apostaBO = new ApostaBO();
-		//apostaBO.atualizarApostaBO(apostaVO);
-	//}
 
 	public ArrayList<ApostaVO> consultarTodasApostasController() {
 		ApostaBO apostaBO = new ApostaBO();
@@ -50,33 +55,6 @@ public class ApostaController {
 		return apostaBO.consultarApostasBO(apostaVO);
 	}
 
-//	public String atualizarValor() {
-		//double valorAtualizado = 0;
-	//	String mensagem = "";
-	//ApostaBO bo = new ApostaBO();
-		//valorAtualizado = bo.atualizarValor();
-		
-	//	if(valorAtualizado == 0.0) {
-			
-		//	mensagem ="0";
-			
-	//	}else {
-		//	mensagem = String.valueOf(valorAtualizado);
-			
-	//	}
-		
-	//	return mensagem;
-//	}
-	public double subtotal(Double val1, Double val2, Double val3, Double val4) {
-		Double soma = val1 + val2 +val3 +val4;
-		ApostaVO aposta = new ApostaVO();
-		ApostaBO controller = new ApostaBO();
-		return soma;
-	}
 
-	public String validarAposta(String valorDigitado) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

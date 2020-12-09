@@ -9,6 +9,7 @@ public class ApostaBO {
 
 	public void cadastrarApostaBO(ApostaVO apostaVO) {
 		  ApostaDAO apostaDAO = new ApostaDAO();
+		  			apostaDAO.salvar(apostaVO);
 		 
             
 	}
@@ -42,7 +43,7 @@ public class ApostaBO {
 		ArrayList<ApostaVO> apostaVO = petDAO.consultarTodos();
 
 		if (apostaVO.isEmpty()) {
-			System.out.println("\n Lista de apostas está vazia.");
+			System.out.println("\n Lista de apostas estï¿½ vazia.");
 		}
 
 		return apostaVO;
@@ -61,28 +62,28 @@ public class ApostaBO {
 //		return dao.atualizaValor(apostaVO);
 	//}
 	
-	public String validarAposta(Double saldo, double valor) {
-		ApostaVO aposta = new ApostaVO();
-		ApostaDAO dao = new ApostaDAO();
-		dao.validarAposta(aposta);
-		saldo = 0.0;
-		String mensagem = "";
+//	public String validarAposta(Double saldo, double valor) {
+	//	ApostaVO aposta = new ApostaVO();
+	//	ApostaDAO dao = new ApostaDAO();
+		//dao.validarAposta(aposta);
+	//	saldo = 0.0;
+	//	String mensagem = "";
 		
-		if(saldo > 0) {
+	//	if(saldo > 0) {
 			
-			mensagem ="Aposta é válida";
-		} else {
+	//		mensagem ="Aposta ï¿½ vï¿½lida";
+	//	} else {
 			
-			mensagem = "Saldo insuficiente para apostar";
-		}
+	//		mensagem = "Saldo insuficiente para apostar";
+	//	}
 		
-		return mensagem;
-	}
+	//	return mensagem;
+//	}
 
-	private Double subtotal(Double val1, Double val2, Double val3, Double val4) {
-		Double soma = val1 + val2 +val3 +val4;
-		ApostaVO aposta = new ApostaVO();
-		ApostaDAO controller = new ApostaDAO();
-		return soma;
-	}
+	//private Double subtotal(Double val1, Double val2, Double val3, Double val4) {
+	//	Double soma = val1 + val2 +val3 +val4;
+	//	ApostaVO aposta = new ApostaVO();
+	//	ApostaDAO controller = new ApostaDAO();
+		//return soma;
+	//}
 }

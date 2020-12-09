@@ -11,7 +11,9 @@ import javax.swing.border.EmptyBorder;
 import controller.ApostaController;
 import model.DAO.ApostaDAO;
 import model.VO.ApostaVO;
+import model.VO.ClienteVO;
 
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -28,6 +30,10 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class TelaJogos extends JFrame {
 
@@ -40,8 +46,7 @@ public class TelaJogos extends JFrame {
 	private JTextField txtRetorno1;
 	private JTextField txtRetorno2;
 	private JTextField txtRetorno3;
-	private JTextField textField_8;
-	private JTextField valorDigitado;
+	private JTextField txtSubTotal;
 	public static final Double valor1 = 1.78;
 	public static final Double valor2 = 1.55;
 	public static final Double valor3 = 2.22;
@@ -55,6 +60,12 @@ public class TelaJogos extends JFrame {
 	public static final Double valor11 = 3.78;
 	public static final Double valor12 = 2.05;
 
+	ApostaController controller = new ApostaController();
+	ClienteVO usuarioVO = new ClienteVO();
+			  
+			  
+	ApostaVO apostaVO = new ApostaVO();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -77,9 +88,10 @@ public class TelaJogos extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaJogos() {
-		// setIconImage(Toolkit.getDefaultToolkit().getImage(TelaJogos.class.getResource("/icons/football.png")));
+//		 setIconImage(Toolkit.getDefaultToolkit().getImage(TelaJogos.class.getResource("/icons/football.png")));
 
 		setTitle("Futebol");
+		usuarioVO.setId(10);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 569, 838);
@@ -119,19 +131,31 @@ public class TelaJogos extends JFrame {
 		JLabel lblFlamengo = new JLabel("Flamengo");
 		lblFlamengo.setBounds(10, 553, 61, 14);
 		contentPane.add(lblFlamengo);
-
+//RADIO BUTTONS
+		ButtonGroup grupo1 = new ButtonGroup();
+		
 		JRadioButton rdbtnCorinthians = new JRadioButton("Corinthians");
+					 rdbtnCorinthians.setActionCommand("1.78");
 		rdbtnCorinthians.setBounds(120, 121, 109, 23);
 		contentPane.add(rdbtnCorinthians);
 
 		JRadioButton rdbtnEmpate = new JRadioButton("Empate");
+					 rdbtnEmpate.setActionCommand("1.55");
+					// rdbtnEmpate.setSelected(true);
 		rdbtnEmpate.setBounds(233, 121, 83, 23);
 		contentPane.add(rdbtnEmpate);
 
 		JRadioButton rdbtnSaoPaulo = new JRadioButton("S\u00E3o Paulo");
+					 rdbtnSaoPaulo.setActionCommand("2.22");
 		rdbtnSaoPaulo.setBounds(329, 121, 109, 23);
 		contentPane.add(rdbtnSaoPaulo);
-
+		
+		grupo1.add(rdbtnCorinthians);
+		grupo1.add(rdbtnEmpate);
+		grupo1.add(rdbtnSaoPaulo);
+		
+		
+//RADIO BUTTONS
 		JLabel label = new JLabel("1.78");
 		label.setBounds(141, 98, 46, 14);
 		contentPane.add(label);
@@ -150,6 +174,21 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblValor);
 
 		txtValor1 = new JTextField();
+		txtValor1.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				txtSubTotal.setText(txtValor1.getText());
+				apostaVO.setValor1(Double.parseDouble(txtValor1.getText()));
+			}
+		});
+		txtValor1.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent evt) {
+				if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+				txtSubTotal.setText(txtValor1.getText());	
+				}
+			}
+		});
 		txtValor1.setBounds(222, 149, 54, 20);
 		contentPane.add(txtValor1);
 		txtValor1.setColumns(10);
@@ -166,17 +205,26 @@ public class TelaJogos extends JFrame {
 		label_5.setBounds(329, 240, 46, 14);
 		contentPane.add(label_5);
 
+		ButtonGroup grupo2 = new ButtonGroup();
+		
 		JRadioButton rdbtnSantos = new JRadioButton("Santos");
+		             rdbtnSantos.setActionCommand("1.66");
 		rdbtnSantos.setBounds(115, 274, 72, 23);
 		contentPane.add(rdbtnSantos);
 
 		JRadioButton rdbtnEmpate_1 = new JRadioButton("Empate");
+		             rdbtnEmpate_1.setActionCommand("3.44");
 		rdbtnEmpate_1.setBounds(215, 274, 83, 23);
 		contentPane.add(rdbtnEmpate_1);
 
 		JRadioButton rdbtnGoias = new JRadioButton("G\u00F3ias");
+		             rdbtnGoias.setActionCommand("7.75");
 		rdbtnGoias.setBounds(329, 274, 69, 23);
 		contentPane.add(rdbtnGoias);
+		
+		grupo2.add(rdbtnSantos);
+		grupo2.add(rdbtnEmpate_1);
+		grupo2.add(rdbtnGoias);
 
 		JLabel lblNewLabel = new JLabel("Valor");
 		lblNewLabel.setFont(new Font("Arial Black", Font.PLAIN, 12));
@@ -184,6 +232,13 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		txtValor2 = new JTextField();
+		txtValor2.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				txtSubTotal.setText(calcularSubtotal());
+//				valor1 = 
+			}
+		});
 		txtValor2.setBounds(222, 304, 54, 20);
 		contentPane.add(txtValor2);
 		txtValor2.setColumns(10);
@@ -199,18 +254,26 @@ public class TelaJogos extends JFrame {
 		JLabel label_8 = new JLabel("2.09");
 		label_8.setBounds(352, 380, 46, 14);
 		contentPane.add(label_8);
-
+		
+         ButtonGroup grupo3 = new ButtonGroup();
 		JRadioButton rdbtnCeara = new JRadioButton("Cear\u00E1");
+		             rdbtnCeara.setActionCommand("4.03");
 		rdbtnCeara.setBounds(99, 409, 67, 23);
 		contentPane.add(rdbtnCeara);
 
 		JRadioButton rdbtnEmpate_2 = new JRadioButton("Empate");
+		             rdbtnEmpate_2.setActionCommand("2.88");
 		rdbtnEmpate_2.setBounds(215, 409, 69, 23);
 		contentPane.add(rdbtnEmpate_2);
 
 		JRadioButton rdbtnInternacional = new JRadioButton("Internacional");
+		             rdbtnInternacional.setActionCommand("2.09");
 		rdbtnInternacional.setBounds(329, 409, 109, 23);
 		contentPane.add(rdbtnInternacional);
+		
+		grupo3.add(rdbtnCeara);
+		grupo3.add(rdbtnEmpate_2);
+		grupo3.add(rdbtnInternacional);
 
 		JLabel lblValor_1 = new JLabel("Valor");
 		lblValor_1.setFont(new Font("Arial Black", Font.PLAIN, 12));
@@ -218,6 +281,13 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblValor_1);
 
 		txtValor3 = new JTextField();
+		txtValor3.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				txtSubTotal.setText(calcularSubtotal());
+			}
+		});
+		txtValor3.setText("0.0");
 		txtValor3.setBounds(233, 439, 46, 20);
 		contentPane.add(txtValor3);
 		txtValor3.setColumns(10);
@@ -233,18 +303,27 @@ public class TelaJogos extends JFrame {
 		JLabel label_11 = new JLabel("2.05");
 		label_11.setBounds(352, 524, 46, 14);
 		contentPane.add(label_11);
-
+		
+		
+         ButtonGroup grupo4 = new ButtonGroup();
 		JRadioButton rdbtnCoritiba = new JRadioButton("Coritiba");
+		             rdbtnCoritiba.setActionCommand("6.76");
 		rdbtnCoritiba.setBounds(120, 549, 72, 23);
 		contentPane.add(rdbtnCoritiba);
 
 		JRadioButton rdbtnEmpate_3 = new JRadioButton("Empate");
+		             rdbtnEmpate_3.setActionCommand("3.78");
 		rdbtnEmpate_3.setBounds(222, 549, 79, 23);
 		contentPane.add(rdbtnEmpate_3);
 
 		JRadioButton rdbtnFlamengo = new JRadioButton("Flamengo");
+		             rdbtnFlamengo.setActionCommand("2.05");
 		rdbtnFlamengo.setBounds(329, 549, 109, 23);
 		contentPane.add(rdbtnFlamengo);
+		
+		grupo4.add(rdbtnCoritiba);
+		grupo4.add(rdbtnEmpate_3);
+		grupo4.add(rdbtnFlamengo);
 
 		JLabel lblValor_2 = new JLabel("Valor");
 		lblValor_2.setFont(new Font("Arial Black", Font.PLAIN, 12));
@@ -252,6 +331,13 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblValor_2);
 
 		txtValor4 = new JTextField();
+		txtValor4.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				txtSubTotal.setText(calcularSubtotal());
+			}
+		});
+		txtValor4.setText("0.0");
 		txtValor4.setBounds(230, 577, 46, 20);
 		contentPane.add(txtValor4);
 		txtValor4.setColumns(10);
@@ -269,20 +355,10 @@ public class TelaJogos extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		 btnSalvar.addActionListener(new ActionListener() {
 		 public void actionPerformed(ActionEvent e) {
-			
-			 ApostaController aposta = new ApostaController();
-			 String valorDigitado = txtValor1.getText();
 			 
-			 
-			 Double val1,val2,val3,val4;
-			 Double soma = 0.0;
-             val1 = Double.parseDouble(txtValor1.getText());
-             val2 = Double.parseDouble(txtValor2.getText());
-             val3 = Double.parseDouble(txtValor3.getText());
-             val4 = Double.parseDouble(txtValor4.getText());
-             
-             soma = aposta.subtotal(val1, val2, val3, val4);
-             label.setText(String.valueOf(soma));
+			 apostaVO.setUsuario(usuarioVO);
+			 controller.cadastrarApostaController(apostaVO);
+
                
                
 		 }
@@ -302,24 +378,14 @@ public class TelaJogos extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
+//				JOptionPane.showMessageDialog(null, grupo1.getSelection().getActionCommand());
+				
+				Double x = Double.parseDouble(txtValor1.getText());
+				Double y = Double.parseDouble(grupo1.getSelection().getActionCommand());
+				Double resultado = x * y;
+				
+				txtRetorno1.setText(resultado.toString());
 
-				double retornoMetodo = 0;
-
-				ApostaController controller = new ApostaController();
-
-				double valorTela = Double.parseDouble(valorDigitado.getText());
-
-				if (rdbtnCorinthians.isSelected()) {
-
-					retornoMetodo = multiCorinthians(valor1, valorTela);
-
-				} else if (rdbtnEmpate.isSelected()) {
-					retornoMetodo = multiEmpate(valor2, valorTela);
-				} else if (rdbtnSaoPaulo.isSelected()) {
-					retornoMetodo = multiSaoPaulo(valor3, valorTela);
-				}
-
-				txtRetorno1.setText(String.valueOf(retornoMetodo));
 
 			}
 		});
@@ -340,23 +406,15 @@ public class TelaJogos extends JFrame {
 		JButton btnNewButton_2 = new JButton("OK");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				double retornoMetodo = 0;
+				
+//				JOptionPane.showMessageDialog(null, grupo1.getSelection().getActionCommand());
+				
+				Double x = Double.parseDouble(txtValor2.getText());
+				Double y = Double.parseDouble(grupo2.getSelection().getActionCommand());
+				Double resultado = x * y;
+				
+				txtRetorno2.setText(resultado.toString());
 
-				ApostaController controller = new ApostaController();
-
-				double valorTela = Double.parseDouble(valorDigitado.getText());
-
-				if (rdbtnSantos.isSelected()) {
-
-					retornoMetodo = multiSantos(valor4, valorTela);
-
-				} else if (rdbtnEmpate.isSelected()) {
-					retornoMetodo = multiEmpate(valor5, valorTela);
-				} else if (rdbtnGoias.isSelected()) {
-					retornoMetodo = multiGoias(valor6, valorTela);
-				}
-
-				txtRetorno2.setText(String.valueOf(retornoMetodo));
 			}
 
 		});
@@ -377,46 +435,13 @@ public class TelaJogos extends JFrame {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				double retornoMetodo = 0;
-
-				ApostaController controller = new ApostaController();
-
-				double valorTela = Double.parseDouble(valorDigitado.getText());
-
-				if (rdbtnCeara.isSelected()) {
-
-					retornoMetodo = multiCeara(valor7, valorTela);
-
-				} else if (rdbtnEmpate.isSelected()) {
-					retornoMetodo = multiEmpate(valor8, valorTela);
-				} else if (rdbtnInternacional.isSelected()) {
-					retornoMetodo = multiInternacional(valor9, valorTela);
-				}
-
-				txtRetorno3.setText(String.valueOf(retornoMetodo));
-			}
-
-			private double multiInternacional(Double valor7, Double valorDigitado) {
-				Double multi;
-
-				multi = valor7 * valorDigitado;
-				return multi;
-
-			}
-
-			private double multiEmpate(Double valor8, Double valorDigitado) {
-
-				Double multi;
-
-				multi = valor8 * valorDigitado;
-				return multi;
-			}
-
-			private double multiCeara(Double valor9, Double valorDigitado) {
-				Double multi;
-
-				multi = valor9 * valorDigitado;
-				return multi;
+//				JOptionPane.showMessageDialog(null, grupo1.getSelection().getActionCommand());
+				
+				Double x = Double.parseDouble(txtValor3.getText());
+				Double y = Double.parseDouble(grupo3.getSelection().getActionCommand());
+				Double resultado = x * y;
+				
+				txtRetorno3.setText(resultado.toString());
 			}
 
 		});
@@ -436,48 +461,17 @@ public class TelaJogos extends JFrame {
 		JButton btnOk_1 = new JButton("OK");
 		btnOk_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				double retornoMetodo = 0;
-
-				ApostaController controller = new ApostaController();
-
-				double valorTela = Double.parseDouble(valorDigitado.getText());
-
-				if (rdbtnCoritiba.isSelected()) {
-
-					retornoMetodo = multiCoritiba(valor10, valorTela);
-
-				} else if (rdbtnEmpate.isSelected()) {
-					retornoMetodo = multiEmpate(valor11, valorTela);
-				} else if (rdbtnFlamengo.isSelected()) {
-					retornoMetodo = multiFlamengo(valor12, valorTela);
-				}
-
-				txtRetorno4.setText(String.valueOf(retornoMetodo));
+		//	JOptionPane.showMessageDialog(null, grupo1.getSelection().getActionCommand());
+				
+				Double x = Double.parseDouble(txtValor4.getText());
+				Double y = Double.parseDouble(grupo4.getSelection().getActionCommand());
+				Double resultado = x * y;
+				
+				txtRetorno4 .setText(resultado.toString());
+				
 
 			}
 
-			private double multiCoritiba(Double valor10, double valorDigitado) {
-				Double multi;
-
-				multi = valor10 * valorDigitado;
-				return multi;
-			}
-
-			private double multiEmpate(Double valor11, double valorDigitado) {
-
-				Double multi;
-
-				multi = valor11 * valorDigitado;
-				return multi;
-			}
-
-			private double multiFlamengo(Double valor12, double valorDigitado) {
-
-				Double multi;
-
-				multi = valor12 * valorDigitado;
-				return multi;
-			}
 		});
 		btnOk_1.setBounds(286, 576, 54, 23);
 		contentPane.add(btnOk_1);
@@ -487,10 +481,10 @@ public class TelaJogos extends JFrame {
 		lblSubtotal.setBounds(83, 675, 83, 14);
 		contentPane.add(lblSubtotal);
 
-		textField_8 = new JTextField();
-		textField_8.setBounds(155, 674, 86, 20);
-		contentPane.add(textField_8);
-		textField_8.setColumns(10);
+		txtSubTotal = new JTextField();
+		txtSubTotal.setBounds(155, 674, 86, 20);
+		contentPane.add(txtSubTotal);
+		txtSubTotal.setColumns(10);
 
 		JLabel lblSaldo = new JLabel("Saldo ");
 		lblSaldo.setFont(new Font("Arial", Font.PLAIN, 13));
@@ -505,57 +499,15 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblSaldoAtualizado);
 	}
 
-	private double multiCorinthians(Double valor1, Double valorDigitado) {
-
-		Double multi;
-
-		multi = valor1 * valorDigitado;
-		return multi;
-
-	}
-
-	private double multiEmpate(Double valor2, Double valorDigitado) {
-
-		Double multi;
-
-		multi = valor2 * valorDigitado;
-		return multi;
-
-	}
-
-	private double multiSaoPaulo(Double valor3, Double valorDigitado) {
-
-		Double multi;
-
-		multi = valor3 * valorDigitado;
-		return multi;
-
-	}
-	
-	private double multiSantos(Double valor4, Double valorDigitado) {
+	private String calcularSubtotal() {
+		Double x = Double.parseDouble(txtValor1.getText());
+		Double y = Double.parseDouble(txtValor2.getText());
+		Double z = Double.parseDouble(txtValor3.getText());
+		Double w = Double.parseDouble(txtValor4.getText());
+		Double resultado = x + y + z + w;
 		
-		Double multi;
-
-		multi = valor4 * valorDigitado;
-		return multi;
+		String subTotal = resultado.toString();
+		return subTotal;
 	}
-	private double multiEmpate1(Double valor5, Double valorDigitado) {
-
-		Double multi;
-
-		multi = valor5 * valorDigitado;
-		return multi;
-
-	}
-	
-	private double multiGoias(Double valor6, Double valorDigitado) {
-		Double multi;
-
-		multi = valor6 * valorDigitado;
-		return multi;
-	}
-	
-
-		}
-	
+}
 		

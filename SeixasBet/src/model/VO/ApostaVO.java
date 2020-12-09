@@ -1,13 +1,11 @@
 package model.VO;
 
-import javax.swing.JTextField;
-
 public class ApostaVO {
 	private int id;
-	private double valor;
 	private double valor1;
 	private double valor2;
 	private double valor3;
+	private double valor4;
 	private ClienteVO usuario;
 
 	
@@ -15,13 +13,13 @@ public class ApostaVO {
 		super();
 		
 	}
-	public ApostaVO(int id, double valor, double valor1, double valor2, double valor3,ClienteVO usuario) {
+	public ApostaVO(int id, double valor1, double valor2, double valor3, double valor4,ClienteVO usuario) {
 		super();
 		this.id = id;
-		this.valor = valor;
 		this.valor1 = valor1;
 		this.valor2 = valor2;
 		this.valor3 = valor3;
+		this.valor4 = valor4;
 		this.usuario = usuario;
 	}
 	public int getId() {
@@ -30,18 +28,7 @@ public class ApostaVO {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public double getValor() {
-		return valor;
-	}
-	public void setValor(double valor) {
-		this.valor = valor;
-	}
-	public ClienteVO getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(ClienteVO usuario) {
-		this.usuario = usuario;
-	}
+	
 	public double getValor1() {
 		return valor1;
 	}
@@ -60,11 +47,20 @@ public class ApostaVO {
 	public void setValor3(double valor3) {
 		this.valor3 = valor3;
 	}
-	@Override
-	public String toString() {
-		return "ApostaVO [id=" + id + ", valor=" + valor + ", valor1=" + valor1 + ", valor2=" + valor2 + ", valor3="
-				+ valor3 + ", usuario=" + usuario + "]";
+	public double getValor4() {
+		return valor4;
 	}
+	public void setValor4(double valor4) {
+		this.valor4 = valor4;
+	}
+	public ClienteVO getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(ClienteVO usuario) {
+		this.usuario = usuario;
+	}
+	
+	
 	
 
 }

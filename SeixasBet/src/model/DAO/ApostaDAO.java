@@ -5,11 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import model.BO.ApostaBO;
 import model.VO.ApostaVO;
 import model.VO.ClienteVO;
 
@@ -25,9 +22,15 @@ public class ApostaDAO implements Base<ApostaVO> {
 
 		Statement stmt = Banco.getStatement(conn);
 
-		String query = "INSERT INTO aposta (idaposta, valor, dt_aposta, idusuario) " + " VALUES ('" + novaAposta.getId()
-				+ "','" + novaAposta.getValor() + "','"
+		String query = "INSERT INTO aposta (valor,idusuario) " + " VALUES ('" + novaAposta.getValor1() +
+				"','" + novaAposta.getValor2() +
+				"','" + novaAposta.getValor3() +
+				"','" + novaAposta.getValor4() +
 				+ novaAposta.getUsuario().getId() + "')";
+		
+//		String query = "INSERT INTO aposta (valor, dt_aposta, idusuario) " + " VALUES ('" 
+//				+ "','" + novaAposta.getValor1() + "','"
+//				+ novaAposta.getUsuario().getId() + "')";
 
 		int resultado = 0;
 		try {
@@ -61,7 +64,7 @@ public class ApostaDAO implements Base<ApostaVO> {
 		try {
 			resultado = stmt.executeUpdate(query);
 		} catch (SQLException e) {
-			System.out.println("Erro ao executar a Query de Exclusão da aposta.");
+			System.out.println("Erro ao executar a Query de Exclusï¿½o da aposta.");
 			System.out.println("Erro: " + e.getMessage());
 		}
 
@@ -79,7 +82,7 @@ public class ApostaDAO implements Base<ApostaVO> {
 
 		String query = "UPDATE  aposta SET idaposta = " + aposta.getId() + ", idusuario = "
 				+ aposta.getUsuario().getId() + "', valor = "
-				+ aposta.getValor() + ",'WHERE idaposta = " + aposta.getId();
+				+ aposta.getValor1() + ",'WHERE idaposta = " + aposta.getId();
 
 		try {
 
@@ -87,7 +90,7 @@ public class ApostaDAO implements Base<ApostaVO> {
 
 		} catch (SQLException e) {
 
-			System.out.println("Erro ao executar a query de atualização de aposta");
+			System.out.println("Erro ao executar a query de atualizaï¿½ï¿½o de aposta");
 			System.out.println("Erro: " + e.getMessage());
 
 		} finally {
@@ -122,7 +125,7 @@ public class ApostaDAO implements Base<ApostaVO> {
 			}
 		} catch (SQLException e) {
 
-			System.out.println("Erro ao executar a query que verifica a existência de uma aposta por Id");
+			System.out.println("Erro ao executar a query que verifica a existï¿½ncia de uma aposta por Id");
 			System.out.println("Erro: " + e.getMessage());
 
 		} finally {
@@ -147,7 +150,7 @@ public class ApostaDAO implements Base<ApostaVO> {
 
 		ArrayList<ApostaVO> apostasVO = new ArrayList<ApostaVO>();
 
-		String query = "SELECT idaposta,idusuario,valor, dt_aposta FROM aposta";
+		String query = "SELECT * FROM aposta";
 
 		try {
 
@@ -157,7 +160,7 @@ public class ApostaDAO implements Base<ApostaVO> {
 				ApostaVO apostaVO = new ApostaVO();
 
 				apostaVO.setId(resultado.getInt(1));
-				apostaVO.setValor(resultado.getDouble(2));
+				apostaVO.setValor1(resultado.getDouble(2));
 
 				ClienteDAO usuario = new ClienteDAO();
 				ClienteVO user = usuario.consultarPorId(resultado.getInt("id"));
@@ -198,7 +201,7 @@ public class ApostaDAO implements Base<ApostaVO> {
 
 	//	} catch (SQLException e) {
 
-		//	System.out.println("Erro ao executar a query de atualização da aposta");
+		//	System.out.println("Erro ao executar a query de atualizaï¿½ï¿½o da aposta");
 		//	System.out.println("Erro: " + e.getMessage());
 
 //		} finally {
@@ -211,34 +214,31 @@ public class ApostaDAO implements Base<ApostaVO> {
 	//	return 0;
 //	}
 
-	private double subtotal(Double soma) {
+//	private double subtotal(Double soma) {
 		
-		Connection conn = Banco.getConnection();
+	//	Connection conn = Banco.getConnection();
 
-		Statement stmt = Banco.getStatement(conn);
-		ResultSet resultado = null;
-		String query ="SELECT SUM(VALOR) FROM APOSTA";
-		try {
+	//	Statement stmt = Banco.getStatement(conn);
+	//	ResultSet resultado = null;
+	//	String query ="SELECT SUM(VALOR) FROM APOSTA";
+	//	try {
 
-			resultado = stmt.executeQuery(query);
+		//	resultado = stmt.executeQuery(query);
 
-		} catch (SQLException e) {
+	//	} catch (SQLException e) {
+//
+	//		System.out.println("Erro ao executar a query de soma da aposta");
+	//		System.out.println("Erro: " + e.getMessage());
 
-			System.out.println("Erro ao executar a query de soma da aposta");
-			System.out.println("Erro: " + e.getMessage());
+	//	} finally {
 
-		} finally {
+	//		Banco.closeStatement(stmt);
+		//	Banco.closeConnection(conn);
 
-			Banco.closeStatement(stmt);
-			Banco.closeConnection(conn);
+		//}
 
-		}
+		//return soma;
+//	}
 
-		return soma;
-	}
-
-	public void validarAposta(ApostaVO aposta) {
-		
-		
-	}
+	
 }
