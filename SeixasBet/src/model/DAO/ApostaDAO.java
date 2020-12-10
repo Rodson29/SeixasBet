@@ -22,15 +22,12 @@ public class ApostaDAO implements Base<ApostaVO> {
 
 		Statement stmt = Banco.getStatement(conn);
 
-		String query = "INSERT INTO aposta (valor,idusuario) " + " VALUES ('" + novaAposta.getValor1() +
+		String query = "INSERT INTO aposta (valor1,valor2,valor3,valor4,idusuario) " + " VALUES ('" 
+				+ novaAposta.getValor1() +
 				"','" + novaAposta.getValor2() +
 				"','" + novaAposta.getValor3() +
 				"','" + novaAposta.getValor4() +
-				+ novaAposta.getUsuario().getId() + "')";
-		
-//		String query = "INSERT INTO aposta (valor, dt_aposta, idusuario) " + " VALUES ('" 
-//				+ "','" + novaAposta.getValor1() + "','"
-//				+ novaAposta.getUsuario().getId() + "')";
+				"','" + novaAposta.getUsuario().getId() + "')";
 
 		int resultado = 0;
 		try {

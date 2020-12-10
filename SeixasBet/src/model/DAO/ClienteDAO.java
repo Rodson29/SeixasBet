@@ -20,7 +20,7 @@ public class ClienteDAO {
 
     public int salvar(ClienteVO cliente) {
         Connection conn = Banco.getConnection();
-        String sql = "INSERT INTO CLIENTE (NOME,TELEFONE,CPF ,DATANASCIMENTO,VALOR) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO CLIENTE (NOME,TELEFONE,CPF ,DT_NASCIMENTO,VALOR) VALUES (?,?,?,?,?)";
         PreparedStatement Prepstmt = Banco.getPreparedStatement(conn, sql, PreparedStatement.RETURN_GENERATED_KEYS);
         int resultado = 0;
         try {
@@ -58,7 +58,7 @@ public class ClienteDAO {
         Connection conn = Banco.getConnection();
         Statement stmt = Banco.getStatement(conn);
         ResultSet result = null;
-        String sql = "SELECT * FROM CLIENTE ORDER BY NOME ASC";
+        String sql = "SELECT * FROM USUARIO ORDER BY NOME ASC";
         ArrayList<ClienteVO> clientes = new ArrayList<ClienteVO>();
 
  
@@ -99,12 +99,11 @@ public class ClienteDAO {
     private ClienteVO construirDoResultSet(ResultSet result) {
         ClienteVO novoCliente = new ClienteVO();
         try {
-            novoCliente.setId(result.getInt("IDCLIENTE"));
-            novoCliente.setNome(result.getString("NOME"));            
-            novoCliente.setTelefone(result.getString("TELEFONE"));            
+            novoCliente.setId(result.getInt("IDUSUARIO"));
+            novoCliente.setNome(result.getString("NOME"));                       
             novoCliente.setCpf(result.getString("CPF"));
-            novoCliente.setDt_nascimento(result.getDate("DataNascimento").toLocalDate());
-            novoCliente.setValor_depositado(result.getDouble("valor"));
+//            novoCliente.setDt_nascimento(result.getDate("DT_NASCIMENTO").toLocalDate());
+            novoCliente.setValor_depositado(result.getDouble("VALOR"));
         } catch (SQLException e) {
             System.out.println("Erro ao construir a partir Do ResultSet. Causa: " + e.getMessage());
         }
@@ -115,7 +114,7 @@ public class ClienteDAO {
 
     public ClienteVO consultarPorId(int idCliente) {
         Connection conexao = Banco.getConnection();
-        String sql = " SELECT * FROM CLIENTE WHERE IDCLIENTE=?";
+        String sql = " SELECT * FROM USUARIO WHERE IDUSUARIO=?";
         ResultSet resultadoDaConsulta = null;
         PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, idCliente);
         ClienteVO clienteSelecionado = null;
@@ -150,7 +149,7 @@ public class ClienteDAO {
     public boolean excluir(int id) {
         Connection conexao = Banco.getConnection();
         Statement statement = Banco.getStatement(conexao);
-        String sql = " DELETE FROM CLIENTE WHERE IDCLIENTE = " + id;
+        String sql = " DELETE FROM USUARIO WHERE IDUSUARIO = " + id;
 
  
 
@@ -176,7 +175,7 @@ public class ClienteDAO {
         Connection conn = Banco.getConnection();
         Statement stmt = Banco.getStatement(conn);
         ResultSet result = null;
-        String sql = "SELECT CPF FROM CLIENTE WHERE CPF = " + "'" + cpfdigitado + "'";
+        String sql = "SELECT CPF FROM USUARIO WHERE CPF = " + "'" + cpfdigitado + "'";
         try {
             result = stmt.executeQuery(sql);
             if (result.next()) {

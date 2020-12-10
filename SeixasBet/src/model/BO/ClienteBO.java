@@ -34,7 +34,10 @@ public class ClienteBO {
     }
 
  
-
+    public ClienteVO consultarPorID(int pClienteId) {
+    	
+    	return dao.consultarPorId(pClienteId);
+    }
     public ArrayList<ClienteVO> consultarTodos() {
 
  
@@ -61,6 +64,7 @@ public class ClienteBO {
         return mensagem;
     }
 
+   
  
 
 }

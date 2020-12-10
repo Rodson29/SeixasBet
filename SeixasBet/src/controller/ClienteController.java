@@ -78,6 +78,11 @@ public class ClienteController {
  
 
     }
+    
+    public ClienteVO consultarPorId(int idCliente) {
+    	
+    	return bo.consultarPorID(idCliente);
+    }
 
  
 

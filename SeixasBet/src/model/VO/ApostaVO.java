@@ -1,6 +1,8 @@
 package model.VO;
 
 public class ApostaVO {
+	
+	
 	private int id;
 	private double valor1;
 	private double valor2;
@@ -60,7 +62,10 @@ public class ApostaVO {
 		this.usuario = usuario;
 	}
 	
-	
-	
+	@Override
+	public String toString() {
+		return "ApostaVO [id=" + id + ", valor1=" + valor1 + ", valor2=" + valor2 + ", valor3=" + valor3 + ", valor4="
+				+ valor4 + ", usuario=" + usuario + "]";
+	}
 
 }

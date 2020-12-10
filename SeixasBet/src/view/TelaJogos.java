@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.ApostaController;
+import controller.ClienteController;
 import model.DAO.ApostaDAO;
 import model.VO.ApostaVO;
 import model.VO.ClienteVO;
@@ -47,6 +48,10 @@ public class TelaJogos extends JFrame {
 	private JTextField txtRetorno2;
 	private JTextField txtRetorno3;
 	private JTextField txtSubTotal;
+	private JLabel lblSaldoAtualizado;
+	private Double SaldoAtualizado;
+	
+	
 	public static final Double valor1 = 1.78;
 	public static final Double valor2 = 1.55;
 	public static final Double valor3 = 2.22;
@@ -60,11 +65,12 @@ public class TelaJogos extends JFrame {
 	public static final Double valor11 = 3.78;
 	public static final Double valor12 = 2.05;
 
-	ApostaController controller = new ApostaController();
+	ApostaController apostaController = new ApostaController();
+	ClienteController clienteController = new ClienteController();
+	
 	ClienteVO usuarioVO = new ClienteVO();
-			  
-			  
 	ApostaVO apostaVO = new ApostaVO();
+	ApostaVO novaAposta = new ApostaVO();
 	
 	/**
 	 * Launch the application.
@@ -91,8 +97,7 @@ public class TelaJogos extends JFrame {
 //		 setIconImage(Toolkit.getDefaultToolkit().getImage(TelaJogos.class.getResource("/icons/football.png")));
 
 		setTitle("Futebol");
-		usuarioVO.setId(10);
-
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 569, 838);
 		contentPane = new JPanel();
@@ -174,11 +179,13 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblValor);
 
 		txtValor1 = new JTextField();
+		txtValor1.setText("0.0");
 		txtValor1.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				txtSubTotal.setText(txtValor1.getText());
+				calcularSubtotal();
 				apostaVO.setValor1(Double.parseDouble(txtValor1.getText()));
+
 			}
 		});
 		txtValor1.addKeyListener(new KeyAdapter() {
@@ -232,11 +239,12 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblNewLabel);
 
 		txtValor2 = new JTextField();
+		txtValor2.setText("0.0");
 		txtValor2.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				txtSubTotal.setText(calcularSubtotal());
-//				valor1 = 
+				apostaVO.setValor2(Double.parseDouble(txtValor2.getText()));
+				calcularSubtotal();
 			}
 		});
 		txtValor2.setBounds(222, 304, 54, 20);
@@ -284,7 +292,8 @@ public class TelaJogos extends JFrame {
 		txtValor3.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				txtSubTotal.setText(calcularSubtotal());
+				apostaVO.setValor3(Double.parseDouble(txtValor3.getText()));
+				calcularSubtotal();
 			}
 		});
 		txtValor3.setText("0.0");
@@ -334,7 +343,8 @@ public class TelaJogos extends JFrame {
 		txtValor4.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				txtSubTotal.setText(calcularSubtotal());
+				apostaVO.setValor4(Double.parseDouble(txtValor4.getText()));
+				calcularSubtotal();
 			}
 		});
 		txtValor4.setText("0.0");
@@ -357,11 +367,49 @@ public class TelaJogos extends JFrame {
 		 public void actionPerformed(ActionEvent e) {
 			 
 			 apostaVO.setUsuario(usuarioVO);
-			 controller.cadastrarApostaController(apostaVO);
+			 
+			 
 
+    
+				String valorDigitado1 = txtValor1.getText();
+				valorDigitado1 = valorDigitado1.replaceAll(",", ".");
+				valorDigitado1 = valorDigitado1.replace("R$ ", "");
+				Double valor = Double.parseDouble(valorDigitado1);
+				
+				String valorDigitado2 = txtValor2.getText();
+				valorDigitado2 = valorDigitado2.replaceAll(",", ".");
+				valorDigitado2 = valorDigitado2.replace("R$ ", "");
+				Double valor1 = Double.parseDouble(valorDigitado2);
+				
+				String valorDigitado3 = txtValor3.getText();
+				valorDigitado3 = valorDigitado3.replaceAll(",", ".");
+				valorDigitado3 = valorDigitado3.replace("R$ ", "");
+				Double valor2 = Double.parseDouble(valorDigitado3);
+				
+				String valorDigitado4 = txtValor4.getText();
+				valorDigitado4 = valorDigitado4.replaceAll(",", ".");
+				valorDigitado4 = valorDigitado4.replace("R$ ", "");
+				Double valor3 = Double.parseDouble(valorDigitado4);
+
+			
+				String mensagem = "";
+				String msg = "";
+
+				mensagem = apostaController.validarCamposSalvar( valorDigitado1, valorDigitado2, valorDigitado3,  valorDigitado4);
+
+				if (mensagem.isEmpty()) {
+//					ApostaVO aposta = new ApostaVO();
+					apostaController.cadastrarApostaController(apostaVO);
+					msg = "Aposta Realizada com Sucesso!";
+					JOptionPane.showMessageDialog(null, msg);
+
+				
+				} else {
+					JOptionPane.showMessageDialog(null, mensagem, "Cadastrar aposta", JOptionPane.INFORMATION_MESSAGE);
+				}
                
                
-		 }
+		    }
 
 	
 			});
@@ -492,22 +540,50 @@ public class TelaJogos extends JFrame {
 		contentPane.add(lblSaldo);
 
 		ApostaController apostaController = new ApostaController();
-		JLabel lblSaldoAtualizado = new JLabel("New label");
-		//lblSaldoAtualizado.setText(apostaController.atualizarValor());
+		
+		usuarioVO = fazerLogin(1);
+		
 
-		lblSaldoAtualizado.setBounds(478, 50, 46, 14);
+		lblSaldoAtualizado = new JLabel("");
+		lblSaldoAtualizado.setText( String.valueOf(usuarioVO.getValor_depositado()));
+	
+		lblSaldoAtualizado.setBounds(478, 50, 65, 14);
 		contentPane.add(lblSaldoAtualizado);
+	
+		SaldoAtualizado = Double.parseDouble( lblSaldoAtualizado.getText());
+		
+		JLabel lblSejaBemVindo = new JLabel("Seja Bem Vindo: ");
+		
+		lblSejaBemVindo.setText(lblSejaBemVindo.getText() + usuarioVO.getNome());
+		lblSejaBemVindo.setBounds(10, 11, 156, 14);
+		contentPane.add(lblSejaBemVindo);
 	}
 
-	private String calcularSubtotal() {
+	private void calcularSubtotal() {
 		Double x = Double.parseDouble(txtValor1.getText());
 		Double y = Double.parseDouble(txtValor2.getText());
 		Double z = Double.parseDouble(txtValor3.getText());
 		Double w = Double.parseDouble(txtValor4.getText());
 		Double resultado = x + y + z + w;
-		
-		String subTotal = resultado.toString();
-		return subTotal;
+	
+		txtSubTotal.setText(resultado.toString());
+		atualizarSaldo();
+
 	}
+	
+	private void atualizarSaldo() {
+		
+
+		Double subTotal = Double.parseDouble(txtSubTotal.getText());
+		Double resultado = SaldoAtualizado - subTotal;
+		
+		lblSaldoAtualizado.setText(resultado.toString());
+
+	}
+	
+	private ClienteVO fazerLogin(int pCodigo) {
+		return clienteController.consultarPorId(pCodigo);
+	}
+	
 }
 		
