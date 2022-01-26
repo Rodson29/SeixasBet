@@ -23,8 +23,8 @@ public class ApostaBO {
 	public int atualizarApostaBO(ApostaVO apostaVO) {
 		
 		  ApostaDAO apostaDAO = new ApostaDAO();
-          ApostaVO aposta = null;
-		return apostaDAO.alterar(aposta);
+                  ApostaVO aposta = null;
+		  return apostaDAO.alterar(aposta);
 	}
 
 	public ApostaVO consultarApostasBO(ApostaVO apostaVO) {
